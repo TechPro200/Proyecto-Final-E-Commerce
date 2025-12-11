@@ -1,31 +1,36 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Link, useLocation } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/config';
 import Register from './components/Register';
+import Navbar from './components/Navbar';
+import Products from "./pages/Products";
 
 function AppContent() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // para saber en qué ruta estás
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
 
       // Si hay usuario logueado → envía a inventario
-      if (currentUser) navigate('/inventory');
+      if (currentUser && location.pathname === "/") {
+        navigate('/inventory');
+      }
     });
 
     return unsubscribe;
-  }, [navigate]);
+  }, [navigate, location.pathname]);
+
+  const hideNavbar = location.pathname === "/"; // NO mostrar en login
 
   return (
-    <div>
-      {user && (
-        <p className="text-green-500 p-4">
-          Usuario logueado: {user.email}
-        </p>
-      )}
+    <div className="min-h-screen flex flex-col">
+
+      {/* NAVBAR GLOBAL */}
+      {!hideNavbar && <Navbar user={user} />}
 
       <Routes>
         {/* Página principal (Login placeholder) */}
@@ -55,19 +60,8 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
 
         {/* Pagina inventario */}
-        <Route
-          path="/inventory"
-          element={
-            <div className="min-h-screen bg-gray-50 p-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                Inventario - Bienvenido!
-              </h1>
-              <p>
-                Próximamente: Lista de productos con stock real-time (HU2.1).
-              </p>
-            </div>
-          }
-        />
+        <Route path="/products" element={<Products />} />
+        
       </Routes>
     </div>
   );
