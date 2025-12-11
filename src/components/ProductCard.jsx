@@ -28,8 +28,6 @@ export default function ProductCard({ product }) {
           <span className="text-[11px] text-gray-500 mt-1 uppercase">
             {product.categoria}
           </span>
-          console.log("ID del producto en lista:", product.id);
-
         </div>
       </article>
 
