@@ -3,8 +3,12 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -69,6 +73,8 @@ export default function Register() {
       await sendEmailVerification(user);
 
       setSuccess('Registro exitoso! Revisa tu email para verificar la cuenta.');
+
+      navigate('/products');
 
       setFormData({
         nombre: '',
