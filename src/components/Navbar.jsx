@@ -2,8 +2,9 @@ import { useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { Link, useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
-export default function Navbar({ user, showLoginButton = false }) {
+export default function Navbar({ user, showLoginButton = false, onSearch }) {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -14,15 +15,20 @@ export default function Navbar({ user, showLoginButton = false }) {
 
   return (
     <header className="bg-orange-500 shadow-lg w-full sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
         
         {/* LOGO */}
-        <Link to={user ? "/products" : "/"} className="flex items-center">
+        <Link to={user ? "/products" : "/"} className="flex items-center flex-shrink-0">
           <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-2">
             <span className="text-orange-500 font-bold text-sm">⚡</span>
           </div>
           <h1 className="text-white font-bold text-lg">Biblos Electrónica</h1>
         </Link>
+
+        {/* BUSCADOR - Solo visible cuando hay usuario */}
+        {user && onSearch && (
+          <SearchBar onSearch={onSearch} />
+        )}
 
         {/* MENU HORIZONTAL - Solo visible cuando hay usuario */}
         {user && (

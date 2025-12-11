@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 
 function AppContent() {
   const [user, setUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const location = useLocation(); // para saber en qué ruta estás
 
@@ -25,11 +26,19 @@ function AppContent() {
     return unsubscribe;
   }, [navigate, location.pathname]);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
 
       {/* NAVBAR GLOBAL - Se muestra en todas las rutas con comportamiento dinámico */}
-      <Navbar user={user} showLoginButton={location.pathname === "/register"} />
+      <Navbar 
+        user={user} 
+        showLoginButton={location.pathname === "/register"}
+        onSearch={location.pathname === "/products" ? handleSearch : null}
+      />
 
       <Routes>
         {/* Página principal (Login placeholder) */}
@@ -39,7 +48,7 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
 
         {/* Pagina inventario */}
-        <Route path="/products" element={<Products />} />
+        <Route path="/products" element={<Products searchTerm={searchTerm} />} />
         
       </Routes>
     </div>
