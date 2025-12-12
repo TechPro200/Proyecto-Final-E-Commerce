@@ -22,7 +22,9 @@ If you are developing a production application, we recommend using TypeScript wi
 # Instalacion
 
 1.Descargar o clonar el repositiorio en donde sea deseado.
+
 2.Abrir terminal una vez abierto el proyecto y escribir: npm install.
+
 3.Mover archivo '.env' al directorio base del proyecto.
 
 Listo.
